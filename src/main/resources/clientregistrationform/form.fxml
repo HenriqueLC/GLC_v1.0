@@ -1,0 +1,40 @@
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.control.Label?>
+<?import widgets.MaskField?>
+
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<ScrollPane hbarPolicy="NEVER" fitToHeight="true" fitToWidth="true" fx:controller="clientregistrationform.Controller" xmlns:fx="http://javafx.com/fxml">
+
+    <GridPane alignment="center" hgap="5" vgap="10" gridLinesVisible="true">
+
+        <HBox alignment="CENTER_LEFT" GridPane.rowIndex="2" GridPane.columnIndex="0">
+
+            <Text fx:id="legalPersonalityText" text="%legalPersonalityText"/>
+
+            <Label text=" *"/>
+
+        </HBox>
+
+        <ChoiceBox fx:id="legalPersonalityChoiceBox" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+        <Text fx:id="personsRegisterText" GridPane.rowIndex="4" GridPane.columnIndex="0" />
+
+        <MaskField fx:id="personsRegisterMaskField" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+
+        <Label fx:id="personsRegisterError" text="%personsRegisterError"  GridPane.rowIndex="5" GridPane.columnIndex="1">
+            <graphic>
+                <ImageView fitWidth="150" preserveRatio="true">
+
+                </ImageView>
+            </graphic>
+        </Label>
+
+    </GridPane>
+
+</ScrollPane>
+
