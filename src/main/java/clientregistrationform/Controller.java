@@ -1,42 +1,36 @@
 package clientregistrationform;
 
-import javafx.collections.FXCollections;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.text.Text;
-import widgets.MaskField;
+import javafx.scene.Node;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 
-import java.io.UnsupportedEncodingException;
+import javax.xml.stream.Location;
+import java.io.IOException;
 import java.net.URL;
+import java.util.Locale;
+import java.util.Objects;
 import java.util.ResourceBundle;
+import org.controlsfx.control.textfield.*;
 
 public class Controller implements Initializable {
-    public Text legalPersonalityText;
-    public ChoiceBox<String> legalPersonalityChoiceBox;
-    public Text personsRegisterText;
-    public MaskField personsRegisterMaskField;
-    public Label personsRegisterError;
+    public GridPane personForm;
 
+    @Override
     public void initialize(URL location, ResourceBundle resources) {
+        NaturalPersonController naturalPersonController = new NaturalPersonController();
+        personForm.getChildren().add(naturalPersonController);
+        naturalPersonController.getLegalPersonalityChoiceBox().valueProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if(Objects.equals(newValue, resources.getString("juridical"))) {
 
-        try {
-            legalPersonalityChoiceBox.setItems(
-                    FXCollections.observableArrayList(
-                            new String(resources.getString("physical").getBytes("ISO-8859-1"), "UTF-8"),
-                            new String(resources.getString("juridical").getBytes("ISO-8859-1"), "UTF-8"),
-                            new String(resources.getString("publicAgency").getBytes("ISO-8859-1"), "UTF-8")
-                    )
-            );
-            legalPersonalityChoiceBox.getSelectionModel().selectFirst();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+                }
         }
-        
-        personsRegisterText.setText("CPF");
-
-        personsRegisterMaskField.setMask("DDD.DDD.DDD-DD");
-
+        });
 
     }
 }

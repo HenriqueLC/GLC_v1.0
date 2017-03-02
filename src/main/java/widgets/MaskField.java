@@ -49,7 +49,8 @@ public class MaskField extends TextField {
 
         maskField.maskProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
-                Text text = new Text(newValue);
+                String alphaOnly = newValue.replaceAll("[^a-zA-Z]+", "");
+                Text text = new Text(alphaOnly + "-");
                 text.setFont(getFont());
                 maskField.setMaxWidth(text.getBoundsInLocal().getWidth());
             }
@@ -58,7 +59,8 @@ public class MaskField extends TextField {
         maskField.fontProperty().addListener((observable, oldValue, newValue) -> {
             String value = maskProperty().getValue();
             if (value != null) {
-                Text text = new Text(value);
+                String alphaOnly = value.replaceAll("[^a-zA-Z]+", "");
+                Text text = new Text(alphaOnly +  "-");
                 text.setFont(newValue);
                 maskField.setMaxWidth(text.getBoundsInLocal().getWidth());
             }
@@ -87,12 +89,6 @@ public class MaskField extends TextField {
 
     public final String getMask() {
         return maskProperty().get();
-    }
-
-    private int getPrefWidth(String value) {
-        Text text = new Text(value);
-        text.setFont(this.getFont());
-        return (int)text.getBoundsInLocal().getWidth();
     }
 
     public final void setMask(String value) {

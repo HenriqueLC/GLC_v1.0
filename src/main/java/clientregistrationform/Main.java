@@ -11,12 +11,13 @@ import java.util.ResourceBundle;
 public class Main extends Application {
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setResources(ResourceBundle.getBundle("UIResources", new Locale("pt", "BR")));
-        Parent root = fxmlLoader.load(getClass().getResourceAsStream("form.fxml"));
+        fxmlLoader.setLocation(getClass().getResource("Main.fxml"));
+        Parent root = fxmlLoader.load();
         primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 300, 275));
+        primaryStage.setScene(new Scene(root));
         primaryStage.show();
     }
 

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.BorderPane?>
+
+<?import javafx.scene.layout.GridPane?>
+<BorderPane fx:controller="clientregistrationform.Controller" xmlns:fx="http://javafx.com/fxml">
+
+    <center>
+
+        <ScrollPane hbarPolicy="NEVER" fitToHeight="true" fitToWidth="true">
+
+            <GridPane fx:id="personForm" alignment="center"/>
+
+        </ScrollPane>
+
+    </center>
+
+</BorderPane>

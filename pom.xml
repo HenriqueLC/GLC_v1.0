@@ -8,8 +8,15 @@
     <artifactId>GLC_v1.0</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    <build>
+    <dependencies>
+        <dependency>
+            <groupId>org.controlsfx</groupId>
+            <artifactId>controlsfx</artifactId>
+            <version>8.40.12</version>
+        </dependency>
+    </dependencies>
 
+    <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -20,13 +27,13 @@
                 </configuration>
             </plugin>
         </plugins>
-
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
             </resource>
         </resources>
-
     </build>
+
+
 
 </project>
