@@ -1,5 +1,7 @@
 package clientregistrationform;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,39 +20,59 @@ public class NaturalPersonController extends GridPane implements Initializable {
 
     @FXML
     private MaskField naturalPersonsRegisterMaskField;
+    private boolean wasNaturalPersonsRegisterMaskFieldDisabled;
 
     @FXML
     private Label naturalPersonsRegisterErrorLabel;
+    private boolean wasNaturalPersonsRegisterErrorLabelDisabled;
 
     @FXML
     private TextField naturalPersonFullNameTextField;
+    private boolean wasNaturalPersonFullNameTextFieldDisabled;
 
     @FXML
     private Label naturalPersonFullNameWarningLabel;
+    private boolean wasNaturalPersonFullNameWarningLabelDisabled;
 
     @FXML
     private ToggleGroup addressToggleGroup;
+    private boolean wasAddressToggleGroupDisabled;
+
+    @FXML
+    private RadioButton useAddress;
+    private boolean wasUseAddressDisabled;
+
+    @FXML
+    private RadioButton doNotUseAddress;
+    private boolean wasDoNotUseAddressDisabled;
 
     @FXML
     private MaskField zipCodeMaskField;
+    private boolean wasZipCodeMaskFieldDisabled;
 
     @FXML
     private ComboBox<String> stateComboBox;
+    private boolean wasStateComboBoxDisabled;
 
     @FXML
     private TextField cityTextField;
+    private boolean wasCityTextFieldDisabled;
 
     @FXML
     private TextField districtTextField;
+    private boolean wasDistrictTextFieldDisabled;
 
     @FXML
     private TextField streetTextField;
+    private boolean wasStreetTextFieldDisabled;
 
     @FXML
     private MaskField numberMaskField;
+    private boolean wasNumberMaskFieldDisabled;
 
     @FXML
     private TextField optionalAddressInformationTextField;
+    private boolean wasOptionalAddressInformationTextFieldDisabled;
 
     NaturalPersonController() {
         FXMLLoader fxmlLoader = new FXMLLoader();
@@ -65,83 +87,99 @@ public class NaturalPersonController extends GridPane implements Initializable {
         }
     }
 
-    public ChoiceBox<String> getLegalPersonalityChoiceBox() {
+    ChoiceBox<String> getLegalPersonalityChoiceBox() {
         return legalPersonalityChoiceBox;
     }
 
-    public void setLegalPersonalityChoiceBox(ChoiceBox<String> legalPersonalityChoiceBox) {
+    void setLegalPersonalityChoiceBox(ChoiceBox<String> legalPersonalityChoiceBox) {
         this.legalPersonalityChoiceBox = legalPersonalityChoiceBox;
     }
 
-    public MaskField getNaturalPersonsRegisterMaskField() {
+    MaskField getNaturalPersonsRegisterMaskField() {
         return naturalPersonsRegisterMaskField;
     }
 
-    public void setNaturalPersonsRegisterMaskField(MaskField naturalPersonsRegisterMaskField) {
+    void setNaturalPersonsRegisterMaskField(MaskField naturalPersonsRegisterMaskField) {
         this.naturalPersonsRegisterMaskField = naturalPersonsRegisterMaskField;
     }
 
-    public Label getNaturalPersonsRegisterErrorLabel() {
+    Label getNaturalPersonsRegisterErrorLabel() {
         return naturalPersonsRegisterErrorLabel;
     }
 
-    public void setNaturalPersonsRegisterErrorLabel(Label naturalPersonsRegisterErrorLabel) {
+    void setNaturalPersonsRegisterErrorLabel(Label naturalPersonsRegisterErrorLabel) {
         this.naturalPersonsRegisterErrorLabel = naturalPersonsRegisterErrorLabel;
     }
 
-    public TextField getNaturalPersonFullNameTextField() {
+    TextField getNaturalPersonFullNameTextField() {
         return naturalPersonFullNameTextField;
     }
 
-    public void setNaturalPersonFullNameTextField(TextField naturalPersonFullNameTextField) {
+    void setNaturalPersonFullNameTextField(TextField naturalPersonFullNameTextField) {
         this.naturalPersonFullNameTextField = naturalPersonFullNameTextField;
     }
 
-    public Label getNaturalPersonFullNameWarningLabel() {
+    Label getNaturalPersonFullNameWarningLabel() {
         return naturalPersonFullNameWarningLabel;
     }
 
-    public void setNaturalPersonFullNameWarningLabel(Label naturalPersonFullNameWarningLabel) {
+    void setNaturalPersonFullNameWarningLabel(Label naturalPersonFullNameWarningLabel) {
         this.naturalPersonFullNameWarningLabel = naturalPersonFullNameWarningLabel;
     }
 
-    public ToggleGroup getAddressToggleGroup() {
+    ToggleGroup getAddressToggleGroup() {
         return addressToggleGroup;
     }
 
-    public void setAddressToggleGroup(ToggleGroup addressToggleGroup) {
+    void setAddressToggleGroup(ToggleGroup addressToggleGroup) {
         this.addressToggleGroup = addressToggleGroup;
     }
 
-    public MaskField getZipCodeMaskField() {
+    RadioButton getUseAddress() {
+        return useAddress;
+    }
+
+    void setUseAddress(RadioButton useAddress) {
+        this.useAddress = useAddress;
+    }
+
+    RadioButton getDoNotUseAddress() {
+        return doNotUseAddress;
+    }
+
+    void setDoNotUseAddress(RadioButton doNotUseAddress) {
+        this.doNotUseAddress = doNotUseAddress;
+    }
+
+    MaskField getZipCodeMaskField() {
         return zipCodeMaskField;
     }
 
-    public void setZipCodeMaskField(MaskField zipCodeMaskField) {
+    void setZipCodeMaskField(MaskField zipCodeMaskField) {
         this.zipCodeMaskField = zipCodeMaskField;
     }
 
-    public ComboBox<String> getStateComboBox() {
+    ComboBox<String> getStateComboBox() {
         return stateComboBox;
     }
 
-    public void setStateComboBox(ComboBox<String> stateComboBox) {
+    void setStateComboBox(ComboBox<String> stateComboBox) {
         this.stateComboBox = stateComboBox;
     }
 
-    public TextField getCityTextField() {
+    TextField getCityTextField() {
         return cityTextField;
     }
 
-    public void setCityTextField(TextField cityTextField) {
+    void setCityTextField(TextField cityTextField) {
         this.cityTextField = cityTextField;
     }
 
-    public TextField getDistrictTextField() {
+    TextField getDistrictTextField() {
         return districtTextField;
     }
 
-    public void setDistrictTextField(TextField districtTextField) {
+    void setDistrictTextField(TextField districtTextField) {
         this.districtTextField = districtTextField;
     }
 
@@ -149,23 +187,23 @@ public class NaturalPersonController extends GridPane implements Initializable {
         return streetTextField;
     }
 
-    public void setStreetTextField(TextField streetTextField) {
+    void setStreetTextField(TextField streetTextField) {
         this.streetTextField = streetTextField;
     }
 
-    public MaskField getNumberMaskField() {
+    MaskField getNumberMaskField() {
         return numberMaskField;
     }
 
-    public void setNumberMaskField(MaskField numberMaskField) {
+    void setNumberMaskField(MaskField numberMaskField) {
         this.numberMaskField = numberMaskField;
     }
 
-    public TextField getOptionalAddressInformationTextField() {
+    TextField getOptionalAddressInformationTextField() {
         return optionalAddressInformationTextField;
     }
 
-    public void setOptionalAddressInformationTextField(TextField optionalAddressInformationTextField) {
+    void setOptionalAddressInformationTextField(TextField optionalAddressInformationTextField) {
         this.optionalAddressInformationTextField = optionalAddressInformationTextField;
     }
 
@@ -180,11 +218,177 @@ public class NaturalPersonController extends GridPane implements Initializable {
         );
         // physical person
         legalPersonalityChoiceBox.getSelectionModel().selectFirst();
+        // [ ] use address [x] do not use address
+        useAddress.setSelected(false);
+        doNotUseAddress.setSelected(true);
+        // Load states
+
+
+        // Enable/disable
         naturalPersonsRegisterErrorLabel.setVisible(false);
         naturalPersonFullNameWarningLabel.setVisible(false);
-        // [ ] use address [x] do not use address
-        addressToggleGroup.getToggles().get(0).setSelected(false);
-        addressToggleGroup.getToggles().get(1).setSelected(true);
+        useAddress.setDisable(true);
+        doNotUseAddress.setDisable(true);
+        zipCodeMaskField.setDisable(true);
+        stateComboBox.setDisable(true);
+        cityTextField.setDisable(true);
+        districtTextField.setDisable(true);
+        streetTextField.setDisable(true);
+        numberMaskField.setDisable(true);
+        optionalAddressInformationTextField.setDisable(true);
+        // Natural persons register listeners
+        naturalPersonsRegisterMaskField.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            // save the current state
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                // on focus
+                if (newValue) {
+                    wasUseAddressDisabled = useAddress.isDisabled();
+                    wasDoNotUseAddressDisabled = doNotUseAddress.isDisabled();
+                    wasZipCodeMaskFieldDisabled = zipCodeMaskField.isDisabled();
+                    wasStateComboBoxDisabled = stateComboBox.isDisabled();
+                    wasCityTextFieldDisabled = cityTextField.isDisabled();
+                    wasDistrictTextFieldDisabled = districtTextField.isDisabled();
+                    wasStreetTextFieldDisabled = streetTextField.isDisabled();
+                    wasNumberMaskFieldDisabled = numberMaskField.isDisabled();
+                    wasOptionalAddressInformationTextFieldDisabled = optionalAddressInformationTextField.isDisabled();
+                }
+            }
+        });
+        naturalPersonsRegisterMaskField.plainTextProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if (newValue.length() > 0 && newValue.length() < 11) {
+                    naturalPersonFullNameTextField.setDisable(true);
+                    naturalPersonFullNameWarningLabel.setDisable(true);
+                    useAddress.setDisable(true);
+                    doNotUseAddress.setDisable(true);
+                    zipCodeMaskField.setDisable(true);
+                    stateComboBox.setDisable(true);
+                    cityTextField.setDisable(true);
+                    districtTextField.setDisable(true);
+                    streetTextField.setDisable(true);
+                    numberMaskField.setDisable(true);
+                    optionalAddressInformationTextField.setDisable(true);
+                }
+                else {
+                    // if contained in database, do sth; else, unlock next field and load saved state
+                    naturalPersonFullNameTextField.setDisable(false);
+                    naturalPersonFullNameWarningLabel.setDisable(false);
+                    useAddress.setDisable(wasUseAddressDisabled);
+                    doNotUseAddress.setDisable(wasDoNotUseAddressDisabled);
+                    zipCodeMaskField.setDisable(wasZipCodeMaskFieldDisabled);
+                    stateComboBox.setDisable(wasStateComboBoxDisabled);
+                    cityTextField.setDisable(wasCityTextFieldDisabled);
+                    districtTextField.setDisable(wasDistrictTextFieldDisabled);
+                    streetTextField.setDisable(wasStreetTextFieldDisabled);
+                    numberMaskField.setDisable(wasNumberMaskFieldDisabled);
+                    optionalAddressInformationTextField.setDisable(wasOptionalAddressInformationTextFieldDisabled);
+                }
+            }
+        });
+        // Natural person full name listener
+        naturalPersonFullNameTextField.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                // on focus
+                if (newValue) {
+                    wasZipCodeMaskFieldDisabled = zipCodeMaskField.isDisabled();
+                    wasStateComboBoxDisabled = stateComboBox.isDisabled();
+                    wasCityTextFieldDisabled = cityTextField.isDisabled();
+                    wasDistrictTextFieldDisabled = districtTextField.isDisabled();
+                    wasStreetTextFieldDisabled = streetTextField.isDisabled();
+                    wasNumberMaskFieldDisabled = numberMaskField.isDisabled();
+                    wasOptionalAddressInformationTextFieldDisabled = optionalAddressInformationTextField.isDisabled();
+                }
+            }
+        });
+        naturalPersonFullNameTextField.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if (newValue.length() == 0) {
+                    useAddress.setDisable(true);
+                    doNotUseAddress.setDisable(true);
+                    zipCodeMaskField.setDisable(true);
+                    stateComboBox.setDisable(true);
+                    cityTextField.setDisable(true);
+                    districtTextField.setDisable(true);
+                    streetTextField.setDisable(true);
+                    numberMaskField.setDisable(true);
+                    optionalAddressInformationTextField.setDisable(true);
+                }
+                else {
+                    // if contained in database, do sth; else, unlock next field and load saved state
+                    useAddress.setDisable(false);
+                    doNotUseAddress.setDisable(false);
+                    zipCodeMaskField.setDisable(wasZipCodeMaskFieldDisabled);
+                    stateComboBox.setDisable(wasStateComboBoxDisabled);
+                    cityTextField.setDisable(wasCityTextFieldDisabled);
+                    districtTextField.setDisable(wasDistrictTextFieldDisabled);
+                    streetTextField.setDisable(wasStreetTextFieldDisabled);
+                    numberMaskField.setDisable(wasNumberMaskFieldDisabled);
+                    optionalAddressInformationTextField.setDisable(wasOptionalAddressInformationTextFieldDisabled);
+                }
+            }
+        });
+        // Address listener
+        addressToggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+            @Override
+            public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
+                if (newValue.getToggleGroup().getToggles().get(1).isSelected()) {
+                    zipCodeMaskField.clear();
+                    zipCodeMaskField.setDisable(true);
+                    stateComboBox.getSelectionModel().clearSelection();
+                    stateComboBox.setDisable(true);
+                    cityTextField.clear();
+                    cityTextField.setDisable(true);
+                    districtTextField.clear();
+                    districtTextField.setDisable(true);
+                    streetTextField.clear();
+                    streetTextField.setDisable(true);
+                    numberMaskField.clear();
+                    numberMaskField.setDisable(true);
+                    optionalAddressInformationTextField.clear();
+                    optionalAddressInformationTextField.setDisable(true);
+                }
+                else {
+                    zipCodeMaskField.setDisable(false);
+                }
+            }
+        });
+        // Zip code listener
+        zipCodeMaskField.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            // save the current state
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                // on focus
+                if (newValue) {
+                    wasStateComboBoxDisabled = stateComboBox.isDisabled();
+                    wasCityTextFieldDisabled = cityTextField.isDisabled();
+                    wasDistrictTextFieldDisabled = districtTextField.isDisabled();
+                    wasStreetTextFieldDisabled = streetTextField.isDisabled();
+                    wasNumberMaskFieldDisabled = numberMaskField.isDisabled();
+                    wasOptionalAddressInformationTextFieldDisabled = optionalAddressInformationTextField.isDisabled();
+                }
+            }
+        });
+        zipCodeMaskField.plainTextProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if (newValue.length() < 8) {
+                    stateComboBox.setDisable(true);
+                    cityTextField.setDisable(true);
+                    districtTextField.setDisable(true);
+                    streetTextField.setDisable(true);
+                    numberMaskField.setDisable(true);
+                    optionalAddressInformationTextField.setDisable(true);
+                }
+                else {
+                    // if contained in database, do sth; else, unlock next field and load saved state
+                    stateComboBox.setDisable(false);
+                }
+            }
+        });
     }
 
 }

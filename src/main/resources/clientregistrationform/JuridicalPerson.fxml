@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.control.Label?>
+<?import widgets.MaskField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import java.net.URL?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ComboBox?>
+
+<fx:root type="javafx.scene.layout.GridPane" alignment="center" hgap="10" vgap="5" xmlns:fx="http://javafx.com/fxml">
+
+    <stylesheets>
+        <URL value="@/GLC.css" />
+    </stylesheets>
+
+    <HBox alignment="CENTER_LEFT" GridPane.rowIndex="0" GridPane.columnIndex="0">
+        <Text text="%legal.personality"/>
+        <Text id="required-field-asterisk" text=" *"/>
+    </HBox>
+
+    <ChoiceBox fx:id="legalPersonalityChoiceBox" GridPane.rowIndex="0" GridPane.columnIndex="1" GridPane.columnSpan="3"/>
+
+    <Text text="%juridical.person.national.register" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+
+    <MaskField fx:id="juridicalPersonNationalRegisterMaskField" mask="DD.DDD.DDD/DDDD-DD" GridPane.rowIndex="2" GridPane.columnIndex="1" GridPane.columnSpan="3"/>
+
+    <Label fx:id="juridicalPersonNationalRegisterErrorLabel" text="%juridical.person.national.register.error" GridPane.rowIndex="3" GridPane.columnIndex="1" GridPane.columnSpan="3">
+        <graphic>
+            <ImageView fitHeight="12" fitWidth="12" pickOnBounds="true" preserveRatio="true">
+                <Image url="@/icons/error.png"/>
+            </ImageView>
+        </graphic>
+    </Label>
+
+    <HBox alignment="CENTER_LEFT" GridPane.rowIndex="4" GridPane.columnIndex="0">
+        <Text text="%company.name"/>
+        <Text id="required-field-asterisk" text=" *"/>
+    </HBox>
+
+    <TextField fx:id="companyNameTextField" GridPane.rowIndex="4" GridPane.columnIndex="1" GridPane.columnSpan="3"/>
+
+    <Label fx:id="companyNameWarningLabel" text="%company.name.error" GridPane.rowIndex="5" GridPane.columnIndex="1" GridPane.columnSpan="3">
+        <graphic>
+            <ImageView fitHeight="12" fitWidth="12" pickOnBounds="true" preserveRatio="true">
+                <Image url="@/icons/warning.png"/>
+            </ImageView>
+        </graphic>
+    </Label>
+
+    <HBox alignment="CENTER_LEFT" GridPane.rowIndex="6" GridPane.columnIndex="0">
+        <Text text="%trade.name"/>
+        <Text id="required-field-asterisk" text=" *"/>
+    </HBox>
+
+    <TextField fx:id="tradeNameTextField" GridPane.rowIndex="6" GridPane.columnIndex="1" GridPane.columnSpan="3"/>
+
+    <Label fx:id="tradeNameWarningLabel" text="%trade.name.warning" GridPane.rowIndex="7" GridPane.columnIndex="1" GridPane.columnSpan="3">
+        <graphic>
+            <ImageView fitHeight="12" fitWidth="12" pickOnBounds="true" preserveRatio="true">
+                <Image url="@/icons/warning.png"/>
+            </ImageView>
+        </graphic>
+    </Label>
+
+    <HBox spacing="10" GridPane.rowIndex="8" GridPane.columnIndex="1" GridPane.columnSpan="3">
+        <fx:define>
+            <ToggleGroup fx:id="addressToggleGroup"/>
+        </fx:define>
+        <RadioButton text="%use.address" toggleGroup="$addressToggleGroup"/>
+        <RadioButton text="%do.not.use.address" toggleGroup="$addressToggleGroup"/>
+    </HBox>
+
+    <HBox alignment="CENTER_LEFT" GridPane.rowIndex="10" GridPane.columnIndex="0">
+
+        <Text text="%zip.code"/>
+
+        <Text id="required-field-asterisk" text=" *"/>
+
+    </HBox>
+
+    <MaskField fx:id="zipCodeMaskField" mask="DDDDD-DDD" GridPane.rowIndex="10" GridPane.columnIndex="1" GridPane.columnSpan="3"/>
+
+    <HBox alignment="CENTER_LEFT" GridPane.rowIndex="12" GridPane.columnIndex="0">
+        <Text text="%state"/>
+        <Text id="required-field-asterisk" text=" *"/>
+    </HBox>
+
+    <ComboBox fx:id="stateComboBox" GridPane.rowIndex="12" GridPane.columnIndex="1" GridPane.columnSpan="3"/>
+
+    <HBox alignment="CENTER_LEFT" GridPane.rowIndex="14" GridPane.columnIndex="0">
+        <Text text="%city"/>
+        <Text id="required-field-asterisk" text=" *"/>
+    </HBox>
+
+    <TextField fx:id="cityTextField" GridPane.rowIndex="14" GridPane.columnIndex="1" GridPane.columnSpan="3"/>
+
+    <HBox alignment="CENTER_LEFT" GridPane.rowIndex="16" GridPane.columnIndex="0">
+        <Text text="%district"/>
+        <Text id="required-field-asterisk" text=" *"/>
+    </HBox>
+
+    <TextField fx:id="districtTextField" GridPane.rowIndex="16" GridPane.columnIndex="1" GridPane.columnSpan="3"/>
+
+    <HBox alignment="CENTER_LEFT" GridPane.rowIndex="18" GridPane.columnIndex="0">
+        <Text text="%street"/>
+        <Text id="required-field-asterisk" text=" *"/>
+    </HBox>
+
+    <TextField fx:id="streetTextField" GridPane.rowIndex="18" GridPane.columnIndex="1"/>
+
+    <HBox alignment="CENTER_LEFT" GridPane.rowIndex="18" GridPane.columnIndex="2">
+        <Text text="%number"/>
+        <Text id="required-field-asterisk" text=" *"/>
+    </HBox>
+
+    <MaskField fx:id="numberMaskField" mask="DDDDDD" GridPane.rowIndex="18" GridPane.columnIndex="3"/>
+
+    <Text text="%optional.address.information" GridPane.rowIndex="20" GridPane.columnIndex="0"/>
+
+    <TextField fx:id="optionalAddressInformationTextField" GridPane.rowIndex="20" GridPane.columnIndex="1" GridPane.columnSpan="3"/>
+
+</fx:root>

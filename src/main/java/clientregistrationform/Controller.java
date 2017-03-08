@@ -23,6 +23,9 @@ public class Controller implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         NaturalPersonController naturalPersonController = new NaturalPersonController();
         personForm.getChildren().add(naturalPersonController);
+
+
+
         naturalPersonController.getLegalPersonalityChoiceBox().valueProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {

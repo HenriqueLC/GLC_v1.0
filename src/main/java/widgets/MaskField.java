@@ -294,7 +294,6 @@ public class MaskField extends TextField {
     @Override
     public void replaceText(int start, int end, String text) {
 
-
         int plainStart = interpretMaskPositionInPlainPosition(start);
         int plainEnd = interpretMaskPositionInPlainPosition(end);
 
@@ -314,5 +313,11 @@ public class MaskField extends TextField {
 
         setPlainText(plainText1 + text + plainText2);
 
+    }
+
+    @Override
+    public void clear() {
+        super.clear();
+        setPlainText("");
     }
 }
