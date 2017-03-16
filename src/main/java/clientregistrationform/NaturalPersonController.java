@@ -8,11 +8,17 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import org.h2.tools.Server;
+import widgets.FilterComboBox;
 import widgets.MaskField;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import org.h2.Driver;
 
 public class NaturalPersonController extends GridPane implements Initializable {
     @FXML
@@ -51,7 +57,7 @@ public class NaturalPersonController extends GridPane implements Initializable {
     private boolean wasZipCodeMaskFieldDisabled;
 
     @FXML
-    private ComboBox<String> stateComboBox;
+    private FilterComboBox stateFilterComboBox;
     private boolean wasStateComboBoxDisabled;
 
     @FXML
@@ -160,11 +166,11 @@ public class NaturalPersonController extends GridPane implements Initializable {
     }
 
     ComboBox<String> getStateComboBox() {
-        return stateComboBox;
+        return stateFilterComboBox;
     }
 
-    void setStateComboBox(ComboBox<String> stateComboBox) {
-        this.stateComboBox = stateComboBox;
+    void setStateComboBox(FilterComboBox stateFilterComboBox) {
+        this.stateFilterComboBox = stateFilterComboBox;
     }
 
     TextField getCityTextField() {
@@ -222,7 +228,20 @@ public class NaturalPersonController extends GridPane implements Initializable {
         useAddress.setSelected(false);
         doNotUseAddress.setSelected(true);
         // Load states
+        stateFilterComboBox.setItems(
+                FXCollections.observableArrayList(
+                        "SP", "AC"
+                )
+        );
 
+        try {
+            Connection connection = DriverManager.getConnection("jdbc:h2:~/test", "test", "test");
+            Server.createTcpServer("-tcpPort" ,"9092", "-tcpAllowOthers").start();
+            Server.createWebServer("-webPort", "8082", "-tcpAllowOthers").start();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         // Enable/disable
         naturalPersonsRegisterErrorLabel.setVisible(false);
@@ -230,7 +249,7 @@ public class NaturalPersonController extends GridPane implements Initializable {
         useAddress.setDisable(true);
         doNotUseAddress.setDisable(true);
         zipCodeMaskField.setDisable(true);
-        stateComboBox.setDisable(true);
+        stateFilterComboBox.setDisable(true);
         cityTextField.setDisable(true);
         districtTextField.setDisable(true);
         streetTextField.setDisable(true);
@@ -246,7 +265,7 @@ public class NaturalPersonController extends GridPane implements Initializable {
                     wasUseAddressDisabled = useAddress.isDisabled();
                     wasDoNotUseAddressDisabled = doNotUseAddress.isDisabled();
                     wasZipCodeMaskFieldDisabled = zipCodeMaskField.isDisabled();
-                    wasStateComboBoxDisabled = stateComboBox.isDisabled();
+                    wasStateComboBoxDisabled = stateFilterComboBox.isDisabled();
                     wasCityTextFieldDisabled = cityTextField.isDisabled();
                     wasDistrictTextFieldDisabled = districtTextField.isDisabled();
                     wasStreetTextFieldDisabled = streetTextField.isDisabled();
@@ -264,7 +283,7 @@ public class NaturalPersonController extends GridPane implements Initializable {
                     useAddress.setDisable(true);
                     doNotUseAddress.setDisable(true);
                     zipCodeMaskField.setDisable(true);
-                    stateComboBox.setDisable(true);
+                    stateFilterComboBox.setDisable(true);
                     cityTextField.setDisable(true);
                     districtTextField.setDisable(true);
                     streetTextField.setDisable(true);
@@ -278,7 +297,7 @@ public class NaturalPersonController extends GridPane implements Initializable {
                     useAddress.setDisable(wasUseAddressDisabled);
                     doNotUseAddress.setDisable(wasDoNotUseAddressDisabled);
                     zipCodeMaskField.setDisable(wasZipCodeMaskFieldDisabled);
-                    stateComboBox.setDisable(wasStateComboBoxDisabled);
+                    stateFilterComboBox.setDisable(wasStateComboBoxDisabled);
                     cityTextField.setDisable(wasCityTextFieldDisabled);
                     districtTextField.setDisable(wasDistrictTextFieldDisabled);
                     streetTextField.setDisable(wasStreetTextFieldDisabled);
@@ -294,7 +313,7 @@ public class NaturalPersonController extends GridPane implements Initializable {
                 // on focus
                 if (newValue) {
                     wasZipCodeMaskFieldDisabled = zipCodeMaskField.isDisabled();
-                    wasStateComboBoxDisabled = stateComboBox.isDisabled();
+                    wasStateComboBoxDisabled = stateFilterComboBox.isDisabled();
                     wasCityTextFieldDisabled = cityTextField.isDisabled();
                     wasDistrictTextFieldDisabled = districtTextField.isDisabled();
                     wasStreetTextFieldDisabled = streetTextField.isDisabled();
@@ -310,7 +329,7 @@ public class NaturalPersonController extends GridPane implements Initializable {
                     useAddress.setDisable(true);
                     doNotUseAddress.setDisable(true);
                     zipCodeMaskField.setDisable(true);
-                    stateComboBox.setDisable(true);
+                    stateFilterComboBox.setDisable(true);
                     cityTextField.setDisable(true);
                     districtTextField.setDisable(true);
                     streetTextField.setDisable(true);
@@ -322,7 +341,7 @@ public class NaturalPersonController extends GridPane implements Initializable {
                     useAddress.setDisable(false);
                     doNotUseAddress.setDisable(false);
                     zipCodeMaskField.setDisable(wasZipCodeMaskFieldDisabled);
-                    stateComboBox.setDisable(wasStateComboBoxDisabled);
+                    stateFilterComboBox.setDisable(wasStateComboBoxDisabled);
                     cityTextField.setDisable(wasCityTextFieldDisabled);
                     districtTextField.setDisable(wasDistrictTextFieldDisabled);
                     streetTextField.setDisable(wasStreetTextFieldDisabled);
@@ -338,8 +357,8 @@ public class NaturalPersonController extends GridPane implements Initializable {
                 if (newValue.getToggleGroup().getToggles().get(1).isSelected()) {
                     zipCodeMaskField.clear();
                     zipCodeMaskField.setDisable(true);
-                    stateComboBox.getSelectionModel().clearSelection();
-                    stateComboBox.setDisable(true);
+                    stateFilterComboBox.getSelectionModel().clearSelection();
+                    stateFilterComboBox.setDisable(true);
                     cityTextField.clear();
                     cityTextField.setDisable(true);
                     districtTextField.clear();
@@ -363,7 +382,7 @@ public class NaturalPersonController extends GridPane implements Initializable {
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
                 // on focus
                 if (newValue) {
-                    wasStateComboBoxDisabled = stateComboBox.isDisabled();
+                    wasStateComboBoxDisabled = stateFilterComboBox.isDisabled();
                     wasCityTextFieldDisabled = cityTextField.isDisabled();
                     wasDistrictTextFieldDisabled = districtTextField.isDisabled();
                     wasStreetTextFieldDisabled = streetTextField.isDisabled();
@@ -376,7 +395,7 @@ public class NaturalPersonController extends GridPane implements Initializable {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 if (newValue.length() < 8) {
-                    stateComboBox.setDisable(true);
+                    stateFilterComboBox.setDisable(true);
                     cityTextField.setDisable(true);
                     districtTextField.setDisable(true);
                     streetTextField.setDisable(true);
@@ -385,7 +404,7 @@ public class NaturalPersonController extends GridPane implements Initializable {
                 }
                 else {
                     // if contained in database, do sth; else, unlock next field and load saved state
-                    stateComboBox.setDisable(false);
+                    stateFilterComboBox.setDisable(false);
                 }
             }
         });

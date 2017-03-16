@@ -52,7 +52,7 @@ public class MaskField extends TextField {
                 String alphaOnly = newValue.replaceAll("[^a-zA-Z]+", "");
                 Text text = new Text(alphaOnly + "-");
                 text.setFont(getFont());
-                maskField.setMaxWidth(text.getBoundsInLocal().getWidth());
+                maskField.setMaxWidth(text.getBoundsInLocal().getWidth() + 5);
             }
         });
 
@@ -62,7 +62,7 @@ public class MaskField extends TextField {
                 String alphaOnly = value.replaceAll("[^a-zA-Z]+", "");
                 Text text = new Text(alphaOnly +  "-");
                 text.setFont(newValue);
-                maskField.setMaxWidth(text.getBoundsInLocal().getWidth());
+                maskField.setMaxWidth(text.getBoundsInLocal().getWidth() + 5);
             }
         });
     }

@@ -24,12 +24,10 @@ public class Controller implements Initializable {
         NaturalPersonController naturalPersonController = new NaturalPersonController();
         personForm.getChildren().add(naturalPersonController);
 
-
-
         naturalPersonController.getLegalPersonalityChoiceBox().valueProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                if(Objects.equals(newValue, resources.getString("juridical"))) {
+                if (Objects.equals(newValue, resources.getString("juridical"))) {
 
                 }
         }
