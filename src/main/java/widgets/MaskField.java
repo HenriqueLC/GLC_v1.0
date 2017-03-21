@@ -43,6 +43,21 @@ public class MaskField extends TextField {
      */
     private StringProperty plainText;
 
+    public static final class OsUtils {
+        private static String osName = null;
+
+        private static String getOsName() {
+            if (osName == null) {
+                osName = System.getProperty("os.name").toLowerCase();
+            }
+            return osName;
+        }
+
+        static boolean isUnix() {
+            return getOsName().contains("nix") || getOsName().contains("nux") || getOsName().contains("aix");
+        }
+    }
+
     public MaskField() {
 
         MaskField maskField = this;
@@ -52,7 +67,11 @@ public class MaskField extends TextField {
                 String alphaOnly = newValue.replaceAll("[^a-zA-Z]+", "");
                 Text text = new Text(alphaOnly + "-");
                 text.setFont(getFont());
-                maskField.setMaxWidth(text.getBoundsInLocal().getWidth() + 5);
+                int offset = 0;
+                if (OsUtils.isUnix()) {
+                    offset = 8;
+                }
+                maskField.setMaxWidth(text.getBoundsInLocal().getWidth() + offset);
             }
         });
 
@@ -62,7 +81,11 @@ public class MaskField extends TextField {
                 String alphaOnly = value.replaceAll("[^a-zA-Z]+", "");
                 Text text = new Text(alphaOnly +  "-");
                 text.setFont(newValue);
-                maskField.setMaxWidth(text.getBoundsInLocal().getWidth() + 5);
+                int offset = 0;
+                if (OsUtils.isUnix()) {
+                    offset = 8;
+                }
+                maskField.setMaxWidth(text.getBoundsInLocal().getWidth() + offset);
             }
         });
     }

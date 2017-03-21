@@ -234,15 +234,6 @@ public class NaturalPersonController extends GridPane implements Initializable {
                 )
         );
 
-        try {
-            Connection connection = DriverManager.getConnection("jdbc:h2:~/test", "test", "test");
-            Server.createTcpServer("-tcpPort" ,"9092", "-tcpAllowOthers").start();
-            Server.createWebServer("-webPort", "8082", "-tcpAllowOthers").start();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
         // Enable/disable
         naturalPersonsRegisterErrorLabel.setVisible(false);
         naturalPersonFullNameWarningLabel.setVisible(false);
