@@ -69,7 +69,7 @@ public class MaskField extends TextField {
                 text.setFont(getFont());
                 int offset = 0;
                 if (OsUtils.isUnix()) {
-                    offset = 8;
+                    offset = 7;
                 }
                 maskField.setMaxWidth(text.getBoundsInLocal().getWidth() + offset);
             }
@@ -83,7 +83,7 @@ public class MaskField extends TextField {
                 text.setFont(newValue);
                 int offset = 0;
                 if (OsUtils.isUnix()) {
-                    offset = 8;
+                    offset = 7;
                 }
                 maskField.setMaxWidth(text.getBoundsInLocal().getWidth() + offset);
             }

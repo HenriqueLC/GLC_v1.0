@@ -8,17 +8,19 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
-import org.h2.tools.Server;
-import widgets.FilterComboBox;
+import util.DBUtil;
 import widgets.MaskField;
+import widgets.SelectKeyComboBox;
+
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
-import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Locale;
 import java.util.ResourceBundle;
-import org.h2.Driver;
 
 public class NaturalPersonController extends GridPane implements Initializable {
     @FXML
@@ -57,7 +59,7 @@ public class NaturalPersonController extends GridPane implements Initializable {
     private boolean wasZipCodeMaskFieldDisabled;
 
     @FXML
-    private FilterComboBox stateFilterComboBox;
+    private ComboBox<String> stateSelectKeyComboBox;
     private boolean wasStateComboBoxDisabled;
 
     @FXML
@@ -166,11 +168,11 @@ public class NaturalPersonController extends GridPane implements Initializable {
     }
 
     ComboBox<String> getStateComboBox() {
-        return stateFilterComboBox;
+        return stateSelectKeyComboBox;
     }
 
-    void setStateComboBox(FilterComboBox stateFilterComboBox) {
-        this.stateFilterComboBox = stateFilterComboBox;
+    void setStateComboBox(SelectKeyComboBox stateSelectKeyComboBox) {
+        this.stateSelectKeyComboBox = stateSelectKeyComboBox;
     }
 
     TextField getCityTextField() {
@@ -215,6 +217,9 @@ public class NaturalPersonController extends GridPane implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+
+
         legalPersonalityChoiceBox.setItems(
                 FXCollections.observableArrayList(
                         resources.getString("natural"),
@@ -227,20 +232,13 @@ public class NaturalPersonController extends GridPane implements Initializable {
         // [ ] use address [x] do not use address
         useAddress.setSelected(false);
         doNotUseAddress.setSelected(true);
-        // Load states
-        stateFilterComboBox.setItems(
-                FXCollections.observableArrayList(
-                        "SP", "AC"
-                )
-        );
-
         // Enable/disable
         naturalPersonsRegisterErrorLabel.setVisible(false);
         naturalPersonFullNameWarningLabel.setVisible(false);
         useAddress.setDisable(true);
         doNotUseAddress.setDisable(true);
         zipCodeMaskField.setDisable(true);
-        stateFilterComboBox.setDisable(true);
+        stateSelectKeyComboBox.setDisable(true);
         cityTextField.setDisable(true);
         districtTextField.setDisable(true);
         streetTextField.setDisable(true);
@@ -256,7 +254,7 @@ public class NaturalPersonController extends GridPane implements Initializable {
                     wasUseAddressDisabled = useAddress.isDisabled();
                     wasDoNotUseAddressDisabled = doNotUseAddress.isDisabled();
                     wasZipCodeMaskFieldDisabled = zipCodeMaskField.isDisabled();
-                    wasStateComboBoxDisabled = stateFilterComboBox.isDisabled();
+                    wasStateComboBoxDisabled = stateSelectKeyComboBox.isDisabled();
                     wasCityTextFieldDisabled = cityTextField.isDisabled();
                     wasDistrictTextFieldDisabled = districtTextField.isDisabled();
                     wasStreetTextFieldDisabled = streetTextField.isDisabled();
@@ -274,21 +272,20 @@ public class NaturalPersonController extends GridPane implements Initializable {
                     useAddress.setDisable(true);
                     doNotUseAddress.setDisable(true);
                     zipCodeMaskField.setDisable(true);
-                    stateFilterComboBox.setDisable(true);
+                    stateSelectKeyComboBox.setDisable(true);
                     cityTextField.setDisable(true);
                     districtTextField.setDisable(true);
                     streetTextField.setDisable(true);
                     numberMaskField.setDisable(true);
                     optionalAddressInformationTextField.setDisable(true);
-                }
-                else {
+                } else {
                     // if contained in database, do sth; else, unlock next field and load saved state
                     naturalPersonFullNameTextField.setDisable(false);
                     naturalPersonFullNameWarningLabel.setDisable(false);
                     useAddress.setDisable(wasUseAddressDisabled);
                     doNotUseAddress.setDisable(wasDoNotUseAddressDisabled);
                     zipCodeMaskField.setDisable(wasZipCodeMaskFieldDisabled);
-                    stateFilterComboBox.setDisable(wasStateComboBoxDisabled);
+                    stateSelectKeyComboBox.setDisable(wasStateComboBoxDisabled);
                     cityTextField.setDisable(wasCityTextFieldDisabled);
                     districtTextField.setDisable(wasDistrictTextFieldDisabled);
                     streetTextField.setDisable(wasStreetTextFieldDisabled);
@@ -304,7 +301,7 @@ public class NaturalPersonController extends GridPane implements Initializable {
                 // on focus
                 if (newValue) {
                     wasZipCodeMaskFieldDisabled = zipCodeMaskField.isDisabled();
-                    wasStateComboBoxDisabled = stateFilterComboBox.isDisabled();
+                    wasStateComboBoxDisabled = stateSelectKeyComboBox.isDisabled();
                     wasCityTextFieldDisabled = cityTextField.isDisabled();
                     wasDistrictTextFieldDisabled = districtTextField.isDisabled();
                     wasStreetTextFieldDisabled = streetTextField.isDisabled();
@@ -320,19 +317,18 @@ public class NaturalPersonController extends GridPane implements Initializable {
                     useAddress.setDisable(true);
                     doNotUseAddress.setDisable(true);
                     zipCodeMaskField.setDisable(true);
-                    stateFilterComboBox.setDisable(true);
+                    stateSelectKeyComboBox.setDisable(true);
                     cityTextField.setDisable(true);
                     districtTextField.setDisable(true);
                     streetTextField.setDisable(true);
                     numberMaskField.setDisable(true);
                     optionalAddressInformationTextField.setDisable(true);
-                }
-                else {
+                } else {
                     // if contained in database, do sth; else, unlock next field and load saved state
                     useAddress.setDisable(false);
                     doNotUseAddress.setDisable(false);
                     zipCodeMaskField.setDisable(wasZipCodeMaskFieldDisabled);
-                    stateFilterComboBox.setDisable(wasStateComboBoxDisabled);
+                    stateSelectKeyComboBox.setDisable(wasStateComboBoxDisabled);
                     cityTextField.setDisable(wasCityTextFieldDisabled);
                     districtTextField.setDisable(wasDistrictTextFieldDisabled);
                     streetTextField.setDisable(wasStreetTextFieldDisabled);
@@ -348,8 +344,8 @@ public class NaturalPersonController extends GridPane implements Initializable {
                 if (newValue.getToggleGroup().getToggles().get(1).isSelected()) {
                     zipCodeMaskField.clear();
                     zipCodeMaskField.setDisable(true);
-                    stateFilterComboBox.getSelectionModel().clearSelection();
-                    stateFilterComboBox.setDisable(true);
+                    stateSelectKeyComboBox.getSelectionModel().clearSelection();
+                    stateSelectKeyComboBox.setDisable(true);
                     cityTextField.clear();
                     cityTextField.setDisable(true);
                     districtTextField.clear();
@@ -360,8 +356,7 @@ public class NaturalPersonController extends GridPane implements Initializable {
                     numberMaskField.setDisable(true);
                     optionalAddressInformationTextField.clear();
                     optionalAddressInformationTextField.setDisable(true);
-                }
-                else {
+                } else {
                     zipCodeMaskField.setDisable(false);
                 }
             }
@@ -373,7 +368,7 @@ public class NaturalPersonController extends GridPane implements Initializable {
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
                 // on focus
                 if (newValue) {
-                    wasStateComboBoxDisabled = stateFilterComboBox.isDisabled();
+                    wasStateComboBoxDisabled = stateSelectKeyComboBox.isDisabled();
                     wasCityTextFieldDisabled = cityTextField.isDisabled();
                     wasDistrictTextFieldDisabled = districtTextField.isDisabled();
                     wasStreetTextFieldDisabled = streetTextField.isDisabled();
@@ -386,19 +381,44 @@ public class NaturalPersonController extends GridPane implements Initializable {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 if (newValue.length() < 8) {
-                    stateFilterComboBox.setDisable(true);
+                    stateSelectKeyComboBox.setDisable(true);
                     cityTextField.setDisable(true);
                     districtTextField.setDisable(true);
                     streetTextField.setDisable(true);
                     numberMaskField.setDisable(true);
                     optionalAddressInformationTextField.setDisable(true);
-                }
-                else {
+                } else {
                     // if contained in database, do sth; else, unlock next field and load saved state
-                    stateFilterComboBox.setDisable(false);
+                    stateSelectKeyComboBox.setDisable(false);
+                    // if unloaded, connect and load from the db
+                    if (stateSelectKeyComboBox.getItems().isEmpty()) {
+                        // Load states
+                        // Try to connect
+                        try (Connection connection = DBUtil.getConnection()) {
+                            // Try to load
+                            System.out.println("Loading states...");
+                            try (Statement statement = connection.createStatement()) {
+                                ResultSet resultSet = statement.executeQuery("SELECT * FROM States;");
+                                System.out.println("Loaded!");
+
+                                ArrayList<String> abbreviations = new ArrayList<>();
+                                while (resultSet.next()) {
+                                    abbreviations.add(resultSet.getString("Abbreviation"));
+                                }
+
+                                stateSelectKeyComboBox.setItems(FXCollections.observableList(abbreviations));
+
+                            } catch (SQLException e) {
+                                e.printStackTrace();
+                            }
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
             }
         });
     }
+
 
 }
