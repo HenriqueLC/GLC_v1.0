@@ -1,9 +1,9 @@
 package util;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.net.URL;
 import java.sql.*;
+import java.util.List;
 
 public class DBUtil {
 
@@ -17,7 +17,6 @@ public class DBUtil {
 
         return DriverManager.getConnection(DB_URL, USER, PASS);
     }
-
 
     public static void Init() {
 
@@ -36,22 +35,24 @@ public class DBUtil {
 
                 if (!resultSet.next()) {
 
-                    try (BufferedReader br = new BufferedReader(new FileReader(DBUtil.class.getClassLoader().getResource("dump/states.csv").getFile()))) {
+                    try (BufferedReader br = new BufferedReader(new InputStreamReader(DBUtil.class.getClassLoader().getResourceAsStream("dump/states.csv")))) {
 
-                        String line = "";
+                        System.out.println("Populating States table...");
+                        String line;
                         while ((line = br.readLine()) != null) {
                             // Comma separator
-                            String[] states = line.split(",");
+                            String[] states = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
 
-                            System.out.println("Populating States table...");
                             try (PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO States(ID, Name, Abbreviation) VALUES (?, ?, ?);")) {
                                 preparedStatement.setInt(1, Integer.parseInt(states[0]));
                                 preparedStatement.setString(2, states[1]);
                                 preparedStatement.setString(3, states[2]);
                                 preparedStatement.executeUpdate();
-                                System.out.println("Done!");
+                            } catch (SQLException e) {
+                                e.printStackTrace();
                             }
                         }
+                        System.out.println("Done!");
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -67,27 +68,71 @@ public class DBUtil {
 
                 if (!resultSet.next()) {
 
-                    try (BufferedReader br = new BufferedReader(new FileReader(DBUtil.class.getClassLoader().getResource("dump/cities.csv").getFile()))) {
+                    try (BufferedReader br = new BufferedReader(new InputStreamReader(DBUtil.class.getClassLoader().getResourceAsStream("dump/cities.csv")))) {
 
-                        String line = "";
+                        System.out.println("Populating Cities table...");
+                        String line;
                         while ((line = br.readLine()) != null) {
                             // Comma separator
-                            String[] states = line.split(",");
+                            String[] cities = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
 
-                            System.out.println("Inserting record...");
                             try (PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO Cities(ID, Name, FK_States_Cities) VALUES (?, ?, ?);")) {
-                                preparedStatement.setInt(1, Integer.parseInt(states[0]));
-                                preparedStatement.setString(2, states[1]);
-                                preparedStatement.setInt(3, Integer.parseInt(states[2]));
+                                preparedStatement.setInt(1, Integer.parseInt(cities[0]));
+                                preparedStatement.setString(2, cities[1]);
+                                preparedStatement.setInt(3, Integer.parseInt(cities[2]));
                                 preparedStatement.executeUpdate();
-                                System.out.println("Done!");
+                            } catch (SQLException e) {
+                                e.printStackTrace();
                             }
                         }
+                        System.out.println("Done!");
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 }
 
+                System.out.println("Conditional creating ZipCodes table...");
+                statement.executeUpdate("CREATE TABLE IF NOT EXISTS ZipCodes (ZipCode int NOT NULL, Road varchar(256), District varchar(128), FK_Cities_ZipCodes int NOT NULL, FK_States_ZipCodes int NOT NULL, PRIMARY KEY(ZipCode), FOREIGN KEY(FK_Cities_ZipCodes) REFERENCES Cities(ID), FOREIGN KEY(FK_States_ZipCodes) REFERENCES States(ID));");
+                System.out.println("Successfully created!");
+
+                System.out.println("Checking ZipCodes table...");
+                resultSet = statement.executeQuery("SELECT * FROM ZipCodes LIMIT 1;");
+                System.out.println("OK!");
+
+                if (!resultSet.next()) {
+
+                    try {
+                        List<URL> resources = Util.getResources("dump/zipcodes");
+                        for (int i = 0; i < resources.size(); i++) {
+
+                            try (BufferedReader br = new BufferedReader(new InputStreamReader(resources.get(i).openStream()))) {
+
+                                System.out.println("Populating ZipCodes table... (" + 100 * (i + 1) / resources.size() + "%)");
+                                String line;
+                                while ((line = br.readLine()) != null) {
+                                    // Comma separator
+                                    String[] zipCodes = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+
+                                    try (PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO ZipCodes(ZipCode, Road, District, FK_Cities_ZipCodes, FK_States_ZipCodes) VALUES (?, ?, ?, ?, ?);")) {
+                                        preparedStatement.setInt(1, Integer.parseInt(zipCodes[0]));
+                                        preparedStatement.setString(2, zipCodes[1]);
+                                        preparedStatement.setString(3, zipCodes[2]);
+                                        preparedStatement.setInt(4, Integer.parseInt(zipCodes[3]));
+                                        preparedStatement.setInt(5, Integer.parseInt(zipCodes[4]));
+                                        preparedStatement.executeUpdate();
+                                    } catch (SQLException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        System.out.println("Done!");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }

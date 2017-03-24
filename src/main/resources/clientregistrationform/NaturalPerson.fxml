@@ -77,9 +77,9 @@
 
     <TextField fx:id="districtTextField" GridPane.rowIndex="14" GridPane.columnIndex="1" GridPane.columnSpan="3"/>
 
-    <Text text="%street" GridPane.rowIndex="16" GridPane.columnIndex="0"/>
+    <Text text="%road" GridPane.rowIndex="16" GridPane.columnIndex="0"/>
 
-    <TextField fx:id="streetTextField" GridPane.rowIndex="16" GridPane.columnIndex="1"/>
+    <TextField fx:id="roadTextField" GridPane.rowIndex="16" GridPane.columnIndex="1"/>
 
     <Text text="%number" GridPane.rowIndex="16" GridPane.columnIndex="2"/>
 

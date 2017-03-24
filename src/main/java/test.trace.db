@@ -1,3 +1,0 @@
-2017-03-21 16:55:34 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLException: Table "STATES" not found; SQL statement:
-select * from States [42102-193]
