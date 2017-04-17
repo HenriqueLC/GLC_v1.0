@@ -4,7 +4,9 @@ import util.DBUtil;
 public class Main {
 
     public static void main(String[] args) {
+        // db initialization and consistency check
         DBUtil.Init();
-        Application.launch(clientregistrationform.Main.class, args);
+        // application launch
+        Application.launch(controllers.Main.class, args);
     }
 }
